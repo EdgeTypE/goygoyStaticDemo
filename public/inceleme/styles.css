@@ -1,0 +1,33 @@
+body {
+    background-color: #1a1a1a;
+    color: #fff;
+  }
+  
+  header {
+    margin-bottom: 20px;
+  }
+  
+  .review {
+    margin-top: 20px;
+  }
+  
+  .score-box {
+    float: right;
+    text-align: center;
+  }
+  
+  .score {
+    font-size: 48px;
+    color: gold;
+    margin-bottom: 5px;
+  }
+  
+  .score span {
+    font-size: 14px;
+    color: white;
+  }
+  
+  .review-content {
+    clear: both;
+  }
+  

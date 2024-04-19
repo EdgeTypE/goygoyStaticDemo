@@ -1,0 +1,905 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+    <script src="script.js"></script>
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            border: none; 
+        }
+
+        .carousel-item img {
+            height: 400px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .game-videos-carousel {
+            height: 400px;
+            object-fit: auto;
+            border-radius: 10px;
+        }
+        #game-summary {
+            font-size: 25;
+        }
+        #game-name {
+            font-size: 50;
+        }
+/* 
+        .video-container iframe,
+        .video-container object,
+        .video-container embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        } */
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #131313;
+            color: #fff;
+        }
+
+        body.dark-mode .card {
+            /* background-color: #13131362; */
+            background-color: #13131300;
+            color: #fff;
+        }
+
+        body.dark-mode .card-title {
+            color: #fff;
+        }
+
+        body.dark-mode .card-text {
+            color: #ccc;
+        }
+
+        body.dark-mode .nav-tabs .nav-link {
+            color: #fff;
+        }
+
+        body.dark-mode .nav-tabs .nav-link.active {
+            background-color: #13131300;
+            color: #fff;
+        }
+
+        body.dark-mode .list-group-item {
+            background-color: #13131300;
+            color: #fff;
+        }
+
+        body.dark-mode .table {
+            background-color: #13131300;
+            color: #fff;
+        }
+
+        body.dark-mode .table th {
+            color: #fff;
+        }
+
+        body.dark-mode .table td {
+            color: #fff;
+        }
+
+        body {
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 10%, rgba(0, 0, 0, 0.9) 90%), url("Starfield.jpg");
+            background-blend-mode: overlay;
+            background-size: cover;
+
+            /* backdrop-filter: blur(15px); */
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 1;
+            background-attachment: fixed;
+            font-family: "Segoe UI Light";
+        }
+    </style>
+    <!-- <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="darkModeSwitch">
+        <label class="custom-control-label" for="darkModeSwitch">Light Mode</label>
+    </div> -->
+    <title>Starfield | Goygoy Engine İnceleme</title>
+    <meta name="description" content="Bilim kurgu benim çok sevdiğim bir tema. 
+    Gerek kitaplarda,
+     gerek filmlerde, 
+    gerekse oyunlarda. 
+    Hal böyle olunca 
+    Starfield'ı ayrı bir beklemeye başladım.1"/>
+    <meta name="keywords" content="goygoy engine, goygoy, engine, goygoyengine, goygoy engine log, haberler, oyun haberleri, oyunlar, oyun, gaming, games, indirimler, Starfield oyunu, bilim kurgu, uzay keşfi, RPG oyunları, Bethesda Game Studios, galaksi macerası, uzay gemisi, epik hikaye, karakter oluşturma, oyun kişiselleştirme, Starfield Türkçe yama, Starfield Türkçe oynanış, Starfield inceleme, starfield">
+    <link rel="icon" href="icon.jpg" type="image/jpg">
+    <link rel="shortcut icon" href="icon.jpg">
+
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.goygoyengine.com/" />
+    <meta property="og:title" content="Goygoy Engine" />
+    <meta property="og:description" content="Bilim kurgu benim çok sevdiğim bir tema. 
+    Gerek kitaplarda,
+     gerek filmlerde, 
+    gerekse oyunlarda. 
+    Hal böyle olunca 
+    Starfield'ı ayrı bir beklemeye başladım.2" />
+    <meta property="og:image" content="https://www.goygoyengine.com/inceleme/Starfield.jpg" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://www.goygoyengine.com/" />
+    <meta property="twitter:title" content="Goygoy Engine" />
+    <meta property="twitter:description" content="Bilim kurgu benim çok sevdiğim bir tema. 
+    Gerek kitaplarda,
+     gerek filmlerde, 
+    gerekse oyunlarda. 
+    Hal böyle olunca 
+    Starfield'ı ayrı bir beklemeye başladım.3" />
+    <meta property="twitter:image" content="https://www.goygoyengine.com/inceleme/Starfield.jpg" />
+
+</head>
+<body>
+    
+    <div class="container">
+        <!-- <li class="list-group-item"> -->
+            <strong><span id="game-name">Starfield</strong></span>
+            <br><p>siteyi hala geliştiriyoruz, test için youtube için hazırladığımız videolardan birinin metnini yükledik.</p> <br>
+        <!-- </li> -->
+        <div class="row">
+            <div class="col-md-8">
+                <div id="game-carousel" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#game-carousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#game-carousel" data-slide-to="1"></li>
+                        <li data-target="#game-carousel" data-slide-to="2"></li>
+                        <li data-target="#game-carousel" data-slide-to="3"></li>
+                        <li data-target="#game-carousel" data-slide-to="4"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="starfield/1.jpeg" class="d-block w-100" alt="Image 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="starfield/2.jpeg" class="d-block w-100" alt="Image 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="starfield/3.jpeg" class="d-block w-100" alt="Image 3">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="starfield/4.jpeg" class="d-block w-100" alt="Image 4">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="starfield/5.jpeg" class="d-block w-100" alt="Image 5">
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#game-carousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#game-carousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                
+                <!-- <div class="card">
+                    <div class="card-body"> -->
+                        <!-- <h5 class="card-title">Game Summary</h5> -->
+                        <br>
+                        <div class="row">
+                            <div class="col-md-8" style="vertical-align: middle; margin: auto;">
+                                <div><h3>Harcanmış bir potansiyel</h3></div>
+                            </div>
+                            <div class="col-md-4" align="right" style="vertical-align: middle; margin: auto;">
+                                <div class="card" style="width: 30%;">
+                                    <font size="29" color="gold">84</font>/100
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-text text-justify" id="game-summary">                           Bilim kurgu benim çok sevdiğim bir tema. 
+                            Gerek kitaplarda,
+                             gerek filmlerde, 
+                            gerekse oyunlarda. 
+                            Hal böyle olunca 
+                            Starfield'ı ayrı bir beklemeye başladım. </p>
+                            <!-- Game summary will be added dynamically -->
+                        </p>
+                    <!-- </div>
+                </div> -->
+<!-- 
+                <div class="card">
+                    <div class="card-body"> -->
+                        <p class="card-text text-justify" >
+ 
+                            Oyunu oynamadan önce 
+                            beklediğim şeyler şunlardı:</p><br>
+                            <ul>
+                                <li>İyi bir bilim kurgu hikayesi</li>
+                                <li>Akıcı bir oynanış</li>
+                                <li>Uzay gemimi atlayıp keşif yapabilme</li>
+                                <li>Sürükleyici bir ana hikaye örgüsü</li>
+                                <li>Yaşayan bir dünya</li>
+                            </ul>
+                            <p class="card-text text-justify">
+                             Bu saydığım maddeleri yapan pek çok oyun var.
+                             Ancak tüm bu saydıklarımı birlikte yapacağını iddia eden
+                             tek bir oyun var: 
+                            </p><strong>
+                            Starfield.</strong><br><br>
+                            <p class="card-text text-justify">
+                            
+                            Starfield’ın vaatlerini, 
+                            üç konu başlığına ayırabiliriz: 
+                            <ul>
+                                <li>Uzay keşfi</li>
+                                <li>Rol Yapma Deneyimi</li>
+                                <li>İyi Bir Oynanış</li>
+                            </ul>
+
+                            
+                             No Man's Sky ve türevleri 
+                            uzay ve keşif hissiyatı olayını tamamen çözmüşken 
+                            ona rakip olmak epey zor.<br>
+                            
+                            Rol Yapma Deneyimi, 
+                            Bethesda’nın en güvenilir vaadi olsa gerek. 
+                            Gerek The Elder Scrools serisi, 
+                            gerek Fallout serisiyle 
+                            Bethesda,
+                             rol yapma konusunda rüştünü ispatladı. <br>
+                            
+                            İyi Bir Oynanış: 
+                            Bethesda’nın önceki oyunlarına baktığımızda 
+                            kütük bir oynanış görüyoruz. 
+                            Bu yüzden
+                            beklentileri 
+                            bu konuda fazla yükseltmemek gerekiyor.<br>
+                            
+                            Saydığım bu üç başlıktan
+                             Sizce
+                             Starfield 
+                            kaç tanesinde başarılı olmuş olabilir? <br>
+                            Ben saymayı size bırakacağım.<br>
+                            
+                            Uzay keşfi konusundan başlayalım. <br>
+                            Uzayda keşif yapmak deyince aklınıza gelen ilk şey ne?
+                            Bir  uzay gemisi,
+                             değil mi? 
+                            Uzay geminiz; 
+                            vaadi uzayda keşfetmek olan oyunun aşil tendonu olmalıdır. 
+                            Nasıl atsız, 
+                            kovboy oyunu olmazsa; 
+                            uzay gemisiz de 
+                            uzay oyunu olmaz. 
+                            Ancak bu oyunda uzay gemisi yok. 
+                            Bakmayın öyle gemi yapabildiğinize falan. 
+                            Geminizi ne bir gezegene indirebiliyorsunuz, 
+                            ne de bir gezegenden başka yere gidebiliyorsunuz.
+                            Oyundaki uzay gemisi,
+                            Sadece bir ışınlandırma cihazı görevi görüyor.
+                            Geminizi kullanarak,
+                            ne bir gezegene iniş yapabiliyorsunuz,
+                            Ne de bir gezegenden, başka bir gezegene gidebiliyorsunuz.  
+                            Şu an ekranda,
+                            Hem Starfield’da
+                            hem No Man’s Sky’da,
+                            Nasıl başka gezegene gidebileceğinizi görüyorsunuz
+                            İkisinde de başlangıç aynı.
+                            Önce gemimize biniyoruz.
+                            Sonrasında gemimizi havaya kaldırıyoruz. 
+                            Gemimizi kaldırdıktan sonra,
+                            Starfield’daysanız, 
+                            oyunun menüsüne girip,
+                            gitmek istediğiniz gezegeni seçip
+                            oraya ışınlanıyorsunuz. 
+                            No Man’s Sky’daysa 
+                            gitmek istediğiniz gezegene doğru,
+                            geminin yönünü çeviriyorsunuz.
+                            Starfield’daysanız, 
+                            gezegene vardıktan sonra, 
+                            yine oyunun menüsüne girip, 
+                            gezegende inmek istediğiniz yeri seçiyorsunuz ve
+                            bir ara sahne ile gemi gezegene iniyor.
+                            No Man’s Sky’daysa geminiz gezegene varınca geminizi istediğiniz yere indirebiliyorsunuz.
+                            
+                            Başka bir galaksiye gitmek istediğinizde de aşağı yukarı benzer bir şey yaşıyorsunuz.
+                            Starfield’da da,
+                            No Man’s Sky’da da,
+                            Gemiyi kaldırıyorsunuz ve
+                            Uzaya çıkıyorsunuz. 
+                            Uzaya çıktıktan sonra,
+                            iki oyunda da 
+                            galaksi haritasını açıp ışınlanmak istediğiniz gezegeni seçiyorsunuz.
+                            Starfield’da karşınıza bir animasyon çıkıyor ve animasyondan sonra yükleme ekranına geçiyorsunuz.
+                            No Man’s Sky’da da benzer bir süreç var. 
+                            Ancak No Man’s Sky, 
+                            yükleme ekranını ışınlanma animasyonuna gizliyor. 
+                            Siz warp motoru animasyonu görürken, 
+                            aslında yeni gittiğiniz galaksiyi yüklüyorsunuz. 
+                            Starfield’da,
+                             yükleme ekranı daha kısa olsa da, 
+                            karşınıza çıkan siyah yükleme ekranları oyunla olan tüm bağınızı koparıyor.
+                            <br>
+                            Bu yükleme ekranları sadece uzay yolculuklarında geçerli değil.
+                            Oyunda,
+                            neredeyse girdiğiniz tüm odalar,
+                            siyah bir yükleme ekranıyla açılıyor. 
+                            Küçücük bir kapı açılacak: Yükleme ekranı
+                            Asansöre bineceksiniz: Yükleme ekranı
+                            Uzay geminize bineceksiniz: Yükleme ekranı
+                            Geminizden ineceksiniz: Yükleme ekranı
+                            <br>
+                            Oyun için çok emek verilmiş.
+                            Ancak aptalca bir emek bu.
+                            Bir nehrin kenarındasınız ve,
+                            Bir kovayı su ile dolduracaksınız.
+                            Kovayı, 			bir bardak yardımıyla mı doldurmayı tercih ederdiniz?
+                            Yoksa bir çay kaşığıyla mı?
+                            Oyunun geliştirici ekibi; 
+                            Kovayı, 
+                            çay kaşığıyla doldurmayı tercih etmiş. 
+                            Oyun için kullandıkları oyun motoru,
+                            O kadar eski,
+                            O kadar yetersiz ki
+                            Berbat bir geliştirme süreciyle geliştirdiğim kendi oyunum, 
+                            teknik açıdan bu oyundan daha iyi. 
+                            Ki benim oyun, teknik açıdan berbat bir halde.
+                            Ona rağmen durum bu.
+                            Oyun, 
+                            kutu kutu tasarlanmış. 
+                            Aslında devasa bir açık dünya yok. 
+                            Yüzlerce, 
+                            binlerce farklı kutu var.
+                            Her kutuya geçerken, kısa da olsa bir yükleme ekranıyla karşılaşıyorsunuz.
+                            Ancak her yükleme ekranında, 
+                            Başka bir kutuya geçmiyorsunuz. 
+                            Oyun teknik açıdan o kadar rezalet ki,
+                            Kullandıkları oyun motoru o kadar berbat ki,
+                            Bir asansöre bindiğinizde, 
+                            Sizi bir yükleme ekranı karşılıyor,
+                            Ancak burada oyun, üst katı yüklemiyor.
+                            Üst kat zaten yüklü.
+                            Ama oyun motoru, <br>
+                            sizin karakterinizi, yukarı taşıyamıyor.
+                            Normalde asansör şöyle çalışır:
+                            Sizin üzerinde bulunduğunuz platform, yukarı doğru hareket eder.
+                            Yukarı hareket eden platform, 
+                            üstündeki karakteri de yukarı doğru iter.
+                            Anladığım kadarıyla, oyun motoru bunu başaramıyor.
+                            Bu yüzden, bir siyah ekran devreye giriyor. 
+                            Karakteriniz 
+                            ve asansör siliniyor. <br>
+                            Ve üst katta karakteriniz tekrardan oluşturuluyor.
+                            Bunlar hep, 
+                            Creation Engine denilen bir kod yığınının eseri.
+                          
+                            Bethesda'nın hala kullandığı oyun motoru olan Creation Engine,
+                            o kadar eski ki; 
+                            motorun ilk sürümünü 
+                            Göktürk Liderlerinden Kül Tigin, Orhun Yazıtları'nda yazmaya başlamış olabilir.
+                            Aynı emeği vererek, 
+                            başka bir oyun motorunda bu oyunu yapsalardı, 
+                            Eminim, son yılların en iyi oyunlarından birini görürdük.
+                            Artık yeni oyun motoru yapma bütçesi mi gözlerini korkuttu,
+                            başka bir oyun motoru kullanıp, gelirden pay vermeye, şirket yöneticileri mi onay vermedi,
+                             bilmiyorum.
+                            Ancak bu oyun motorunu kullanma kararını kim aldıysa,
+                            Beynini kuşa taksak ters uçar.
+                            <br>
+                            Oyunda çok fazla problem var ve neredeyse tüm problemlerin anası Creation Engine.<br>
+                            Grafikler kötü. <br>
+                            Ve bu kötü grafiklere rağmen oyunda müthiş performans sorunları var. 
+                            Amatör bir oyun geliştirici olarak, bu performans sorununun nedenini şahsen çözemedim.(Oyunun tüm objeleri kaydetmesi, bence geçerli bir bahane değil. Çünkü herhangi bir fizik objesi bulunmasa da optimizasyon problemli.)
+                            Oyun kocaman bir dünyayı yüklüyor, ondan kasıyor desek, hayır. Oyun açık dünya değil. Kutulardan ibaret.
+                            Grafikler iyi, ondan kasıyor, desek hayır.
+                            Oyunun grafiklerinin PlayStation 4 döneminden kaldığını iddia edenler olmuş. Ancak yanılıyorlar. Nerden baksan PlayStation 3 döneminden kalma bu grafikler. 
+                            2007 yılında çıkan Crysis, bu oyundan daha güzel gözüküyor.
+                            Kimse bu oyundan Crysis 4 grafikleri beklemiyor ama, bu kadarda kötü olmamalı. 
+                            Oyunun genel olarak prodüksiyon kalitesi kötü.
+                            Animasyonlar mesela. Çöp bile diyemezsin. O derece.
+                            Karakterler çok donuk.<br>
+                            2006 yılında çıkan
+                            The Elder Scrools Oblivion ile
+                            bu oyunun animasyonları arasında neredeyse fark yok. 
+                            Bethesda’nın bir kalite çizgisi var ve bu çizgiyi çok iyi koruyorlar. 
+                            Teknoloji ve sektör ne kadar ilerlerse ilerlesin, onlar bir adım ileri atmıyor.
+                            Bu oyun, bu halde Xbox One’a çıksın, teknik açıdan yine eleştirilir.
+                            Şimdi diyeceksiniz ki, 
+                            bu oyunun ana odağı grafikler değil,
+                            Rol yapma deneyimi. 
+                            Ve haklısınız da. <br>
+                            Bir rol yapma oyununda en önemli şeylerden biri de diyaloglardır.
+                            Oyunda pek çok diyalog var
+                            ve tüm bu diyaloglar,
+                            animasyonu ağzını sesin şiddetine göre açıp kapatmaktan ibaret olan NPC’ler tarafından söyleniyor.
+                            Bundan 10 yıl önce çıkan Crysis 3’te yüz animasyonları böyleydi.
+                            2023 yılındaki Starfield’ta ise böyle. 
+                            Bu kadar diyalog odaklı bir oyunun,
+                            hiç olmazsa yüz animasyonları konusunda ilerlemesi lazımdı.
+                            <br>
+                            Bunun dışında rol yapma deneyimi olarak,
+                            oynadığım kadarıyla söyleyebilirim ki, 
+                            oyun çok sağlam. 
+                            İstediğiniz şekilde oyunu oynayabilirsiniz. 
+                            İster gizli gizli gidin,
+                            ister aksiyona girin,
+                            ister diplomasiyle işleriniz halledin. 
+                            <br>
+                            Ben şahsen diplomasiyle ilerlemeyi tercih ediyorum.
+                            Çünkü oyunun çatışma kısmı çok sıkıcı. Düşmanlarınız etten duvarlar. Onlarca mermiyle anca ölüyorlar. Tam bir mermi süngerleri.
+                            Şahsen ben oyunlarda, düşmanlarımızın 1-2 mermiyle ölmesini daha çok seviyorum.
+                            Diyeceksiniz ki, teknoloji gelişti. Zırhlar da gelişti. Ondan, bir sürü mermiyle anca ölüyorlar.
+                            E zırh teknolojisi gelişti de, silah teknolojisi gelişmedi mi?
+                            <br>
+                            Aslında oyunun videolarında aksiyon gayet hoş gözüküyordu. 
+                            En azından beni tatmin etmişti.
+                            Ancak oynarken kesinlikle iyi değil.
+                            Bu yüzden olabildiğince aksiyondan uzak oynamaya çalışıyorum.
+                            Oyunun kötü bölüm tasarımlarından dolayı, çoğu zaman düşmanlardan kolaylıkla kaçabiliyorsunuz. 
+                            Oyun arka arkaya getirilmiş binlerce küçük odadan oluştuğundan, başka bir odaya girdiğiniz zaman, düşmanlar sizi takip edemiyorlar. 
+                            Hatta ve hatta
+                            yanınızdaki ekip arkadaşlarınız bile sizi takip edemiyorlar.
+                            Bir süre sonra ekip arkadaşlarınız, Minecraft’taki köpekler gibi yanınıza ışınlanıyor.
+                            <br>
+                            Bunlar oyunun atmosferini bozsa da, grafikler kötü olsa da, 
+                            Atmosferik olarak oyun bazı yerlerde çok güzel gözüküyor.
+                            Bazı yerleri, altını çizerek söylüyorum. 
+                            Mesela bazı yerlerde de berbat gözüküyor.
+                            Oyunda en çok zamanımızın geçtiği şehir olan New Atlantis’teki ağaçların grafikleri bu halde.
+                            Şahsen böyle grafikli ağaç koyacağıma, ağaçları kaldırırdım. 
+                            <br>
+                            NPCler de aynı ağaçlar gibi.
+                            Sahte oldukları çok belli oluyor.
+                            Ama diyaloglar ve seslendirmeler, güzel.
+                            Hatta seslendirmeler gayet güzel.<br>
+                            Belki bu oyundan önce oynadığım oyunun seslendirmesi çok kötü olduğundan kaynaklanıyordur
+                            ama benim gayet hoşuma gittiler.
+                            Ne yazık ki seslendirmelere yaptığım övgüyü,
+                            oyunun müziklerine yapamayacağım.
+                            Oyunun müziklerini, Skyrim ve Fallout’ın müziklerini yapan Inon Zur besteliyor.
+                            Inon Zur aynı zamanda ilk Crysis oyununun müziklerinin de bestecisi.
+                            Skyrim ve Fallout’u, müziklerini yorumlayacak kadar oynamadım.
+                            Sadece Skyrim’in “dovakin dovakin naal ok zin los vahriin”ini biliyorum ve arada aklıma geldikçe severek dinlerim.
+                            Inon Zur’un Crysis müziklerinde, 
+                            birkaç parça dışında
+                            öyle etkileyici bir şey yoktu.
+                            En azından benim için. 
+                            Starfield’da durum daha da kötü.
+                            Crysis’te en azından akılda kalıcı bir tema, ritim vardı.
+                            Oyun çıktığından beri günde yaklaşık 4 saat oynuyorum. 
+                            Aklımda level atlama ses efekti dışında,
+                            bir müzik,
+                            Bir ritim falan kalmadı.
+                            Tabii müzik kişisel bir şey.
+                            Herkesin müzik zevki farklı.
+                            Belki müzikleri çok sevenler de olabilir.
+                             Ancak dediğim gibi, ben müziklerin varlığını bile fark edemedim.
+                            Müzikler, oyunlarda atmosferi sağlamada çok önemli.
+                            Özellikle çizgisel ilerleyen sinematik odaklı oyunlarda sahneler, müziklerle birleştirildiğinde çok iyi şeyler ortaya çıkabiliyor.
+                            Bu oyunun yapamadığı şeyleri, pek çok oyun kolaylıkla yapıyor.<br>
+                            Bethesda yıllardır, 
+                            yapamadığı konuları yapmaya hiç çabalamamış gibi gözüküyor. 
+                            Ben Skyrim’i çok fazla oynamadım, Oblivion’la aram daha iyi. 
+                            Bu oyunun Oblivion’dan farkını göremiyorum şahsen. 
+                            Birebir aynı formül.
+                            Sadece bu sefer uzay temasında.
+                            Bethesda’nın ana oyun kurgusu, burada da birebir aynı devam ediyor.
+                            Oyunda çok fazla içerik var. 
+                            Rastgele gelişen olaylar bile hiç beklenmedik sonuçlar veriyor.
+                            Oyunun dünyasında gezerken rastgele bir mağazaya girdim.<br>
+                            Mağazada,
+                             cam kilidin arkasında bir zırh vardı. 
+                            Kilidi açmak için, 
+                            kilit açma yeteneğinde uzmanlaşmam gerekiyordu. 
+                            Ancak bir bug sayesinde
+                            camdan bu zırhı alabildiğimi fark ettim. 
+                            Ve mağazayı bu bugla boşaltmaya başladım.
+                            Mağazadan çıkmak için kafamı çevirdim ve polisleri gördüm.
+                            Polisler tarafından tutuklandım.
+                            Tutuklanınca hapishaneye düşüyorsunuz.
+                            Sizi tutuklamaya gelen polislerle çatışabilirsiniz.
+                            Hapishaneye düşük oradan kaçmayı deneyebilirsiniz ya da cezanızı çekebilirsiniz.
+                            Ben polislere zorluk çıkarmadan teslim oldum ve hapishaneye götürüldüm.
+                            Orada beni Hapishane müdürü gibi biri karşıladı.
+                            Benim yetkili bir abiye benzediğimi fark etti ve benden,
+                            bir korsan grubunun içine ajan olarak sızıp,
+                            o korsan grubunu çökertmem karşılığında cezamı iptal edebileceğini söyledi. 
+                            Ben de bu ajanlık teklifini kabul etmiş gibi yaptım,
+                            müdür beni gemime uğurladı, örgütü çökertmem için
+                            Ama ben gemiye bindiğim gibi kaçtım.
+                            <br>
+                            Bu bir görev bile değil,
+                            öylesine gerçekleşen bir olaydı.
+                            Oyunun iyi yaptığı bir şey varsa, 
+                            o da bu. 
+                            Oyunda
+                            o kadar çok farklı yan etkinlik var ki,
+                            bir yerde karşınıza Cengiz Han bile çıkabiliyor.
+                            Oyunun yan hikayeleri gayet güzel.
+                            Ama ana hikayesi o kadar da güzel değil.
+                            Daha doğrusu ana hikayenin başlangıcı güzel değil.
+                            Belki de gördüğüm en kötü ana hikaye açılışı bu oyunda olabilir.
+                            Biz bir madenciyiz.
+                            Artifact diye adlandırılan garip bir parça buluyoruz.
+                            Yerçekimini falan manipüle ediyor bu parça,
+                            bunun üzerine Constellation örgütünden biri bizi buluyor ve uzay gemisini bize veriyor.
+                            Bulduğumuz parçayı, Constellation binasına götürmemizi istiyor.
+                            Constellation, bu parçaları topluyor.
+                            Bunların kaynağını falan araştırıyor. 
+                            Bu parçalar, farklı yıldızlardaki farklı gezegenlerde.
+                            Biz de örgüte katılıyoruz ve diğer Artifactleri aramaya başlıyoruz.
+                            Parçaları buldukça oyun açılıyor.
+                            Hatta ana hikayedeki 10. Saatten sonra, 
+                            ana hikaye çok güzel bir şeye dönüşüyor. 
+                            Ya da oyunun başlangıcı beklentimi o kadar düşürdü ki
+                            oyun hafif düzelince çok fazla beğenmeye başladım.
+                            Ama uyarmak gerek. Eğer bilim kurguyla aranız iyi değilse, bu hikaye size çok sıkıcı gelecektir. 
+                            Tabii şunu da eklemeliyim.
+                            Bu videoyu hazırlarken, oyunun ana hikayesini daha bitirmedim
+                            Ama sanırım bitirmeme birkaç saat kaldı.
+                            Bu yüzden biraz yan görevlere başladım. 
+                            Yan görev konusunda oyun her an yeni bir şey üzerinize atıyor.
+                            İçerik resmen bitmiyor. 
+                            Sadece yan görevlerden bahsetmiyorum.
+                            Mesela, başka bir yıldız sisteminden,
+                            Görevimin olduğu yıldız sistemine ışınlandım.
+                            Geldiğimde bir geminin yardım çağrısını aldım.
+                            Gemi aslında bir okul gezisi içinmiş.
+                            Ancak yolda ilerlerken gemi bozulmuş.
+                            Çocuklar falan konuşuyor.<br>
+                            Öğretmenleri olan kişi, benden yedek parça istedi.
+                            Maalesef yedek parçam yoktu, veremedim.
+                            Çocuklar, öğretmenlerine kimle konuştuklarını sordu.
+                            Telsizden cevap verdim,
+                            Işte ben Constulition’un üyesiyim. 
+                            Uzayı keşfediyorum ,falan
+                            Çocuklar “voooov” falan dedi.
+                            Sonra onları bozuk gemide bırakıp ilerledim ve gezegene inip göreve başladım.
+                            Görevde
+                             benden bir çiftliğe dadanan haydutları 
+                            etkisiz hale getirmem istendi. 
+                            Gittim çiftliğin sahibine sordum, 
+                            En son ne zaman gördün
+                            Nereye gittiler, 
+                            Falan diye.<br>
+                            Aldığım bilgiler doğrultusunda, 
+                            haydutların kamp kurdukları yeri buldum ve onları indirdim. 
+                            İndirmeden önce adamları biraz sorgulamayı denedim.
+                            Ancak fazla bilgi alamadım.
+                            Bildiğim tek şey, adamların çiftliği değil,
+                            Çiftliğin bulunduğu lokasyonu istiyor olmasıydı.
+                            Kamplarının yanında bir uzay gemisi vardı. 
+                            Bu geminin çalıntı olduğunu fark ettim ve
+                            Gemiyi üreten fabrikaya gittim.
+                            Fabrikanın sahibiyle görüştüm.
+                            Hırsız ile ilgili bilgi edinip, 
+                            hırsızın en son görüldüğü yere doğru yola çıkmak üzere
+                            fabrikadan ayrıldım.
+                            Fabrikanın karşısında bir kadın beni karşıladı.
+                            Bir gemi pilotuydu. 
+                            Ama işlemediği bir suçtan dolayı tutuklanmak üzereydi.
+                            Polis her yerde onu arıyordu.
+                            Benden yardım istedi.
+                            Ben de, tamam yaparım, dedim
+                            Ama sanırım yapmayacağım. <br>
+                            Bu olaydan sonra
+                            bugünlük bu kadar yeter
+                            diyerek oyundan çıktım.
+                            Oyun çıktığından beri
+                             her gün 
+                            yaklaşık 4 saat oynuyorum.
+                            Eğer başlangıç kısımlarına dayanabilirseniz
+                            Çok güzel bir oyunla karşılaşabilirsiniz.
+                            Ben 
+                            şahsen 
+                            bu ilk 5-6 saati oynama motivasyonunu, 
+                            internet bağlantımda buldum.
+                            Oyunu indirmem 6 gün sürmüştü.
+                            Bu yüzden 
+                            “seve seve” 
+                            Oyunu
+                            Oynamak zorundaydım
+                            <br>
+                            Neyse ki güzel bir hale dönüştü. 
+                             Beni oyuna bağlayan, oyunun dünyası ve ana hikaye oldu.
+                             <br>
+                            Oyunun dünyası,
+                            Tam da hayalimdeki gibi olmuş.
+                            Gerçekçi bir bilimkurgu evreni tasarlanmış.
+                            Sanki Revelotion Space evreni,
+                            Oyuna uyarlanmış gibi.
+                            Ütopik bir şekilde, 
+                            tüm insan hayallerinin gerçekleştiği bir gelecek tasviri yok.
+                            Bethesda, bu evreni NASApunk olarak tanımlamış.
+                            Ve de çok güzel olmuş.
+                            İçinde yaşanılası bir evren. 
+                            Bana deseniz ki,
+                            Bir oyunun evreninde yaşayacaksın,
+                            Hangisi olsun?
+                            Gönül rahatlığıyla Starfield diyebilirim.
+                            Görsel tarzı, 
+                            fotorealistik olarak gelişmese de
+                            hoş duruyor.
+                            İnsanlık, Dünya’yı ve Güneş Sistemi’ni terk edeli uzun yıllar olmuş.
+                            Hatta bazıları, 
+                            Dünya diye bir yerin varlığına bile inanmamaya başlamış.
+                            Biraz Vakıf esintileri vermedi, değil.
+                            Orada da, 
+                            insanlığın kökeninin
+                            hangi gezegende başladığına yönelik
+                            tartışmalar vardı.
+                            <br>
+                            Uzay gemisine atlayıp, 
+                            bulunduğumuz gezegeni terk etmek,
+                            Gelecekte pek çok kişinin ihtiyacı olacaktır.
+                            <br>
+                            Tabii
+                            gerçekçi bir evren tasviri var oyunda. 
+                            Herkesin uzay gemisi falan yok.
+                            Bir ütopya değil burası.
+                            Örneğin
+                            oyundaki şehirlerden birinde gezerken
+                            Karşıma bir NPC çıktı.
+                            Eşiyle evreni gezmek istiyormuş. 
+                            Bunun için para topluyormuş.
+                            Yıllardır bunun için çalışıyormuş.
+                            <br>
+                            Yani böyle bir evrende yaşasak bile,
+                            Evreni keşfetmek için şanslı olmamız gerekiyor.
+                            <br>
+                            Bizde zaten
+                            şansa bala gemi sahibi oluyoruz.
+                            Bir maden işçisiyken, 
+                            Artifact’i bulmasak,
+                            Maden ocaklarında çalışmaya mahkumuz.
+                            <br>
+                            Şimdi, Starfield’a bir puan vermek gerekirse. Benim oyundan beklediğim şunlardı:
+                            <br>
+                            <ul>
+                                <li>İyi bir bilim kurgu hikayesi</li>
+                                <li>Akıcı bir oynanış</li>
+                                <li>Uzay gemime atlayıp keşif yapabilme</li>
+                                <li>Sürükleyici bir ana hikaye örgüsü</li>
+                                <li>Yaşayan bir dünya</li>
+                            </ul>
+  <br>
+                            Oyunun keşif hissi, çok havada kalıyor. 
+                            Uzay gemisinin
+                            Bu kadar arkaplana atılması kesinlikle hoş değil. <br>
+                            Grafikler, 
+                            Iki nesil önceden kalma gibi.
+                            Kesinlikle modern bir oyun gibi gözükmüyor. <br>
+                            -Oynanış:  <br>
+                            kötü. Mümkün oldukça 
+                            çatışmalardan kaçmaya çalışıyorum.
+                            Hatta çatışmalardan o kadar kaçıyorum ki,
+                            belki de oyundaki 20-25 saatimde 
+                            100 tane bile adam öldürmedim.
+                            Çatışmalar o kadar kötü işte. 
+                            Oyunda fazla bug yok.
+                            Ortalama bir açık dünya oyununda ne kadar bug varsa
+                            O kadar bug var.
+                            Oyun kıran bir hata ile tek bir sekansta karşılaştım.
+                            O da oyun sırasında değil, bir gezegenden kalkarken oluyor.
+                            Bazen gezegenlerden kalkarken, oyunum çöküyor.
+                            Nedenini bilmiyorum. 
+                            Bunun dışında bir çökme sorunu yaşamadım.
+                            Video metnini yazmayı bitirdikten sonra
+                            Tekrar Starfield oynamaya başladım.
+                            Ve karakterim buga girmişti.
+                            Ateş edemiyordu. 
+                            Ne yaparsam yapayım
+                            Karakter ateş etmiyordu.
+                            Bugun çözümü ise şu:
+                            Oyundaki büyük şehirlerdeki kliniklerden birine gidip, 
+                            karakterinizi tekrardan oluşturuyorsunuz.
+                            Oyunda işte böyle buglar var.
+                            <br>
+                            Mod konusuna gelirsek. 
+                            Bence bu oyun şu anda modsuz oynanmaz.
+                            En basitinden, oyunda öyle bir renk paleti var ki,
+                            Hiçbir şey göremiyorsunuz.
+                            Mesela oyunda DLSS yok. 
+                            Starfield’ın 
+                            AMD ile özel bir partnerlik anlaşması var.
+                            AMD’nin DLSS alternatifi FSR hiç iyi çalışmıyor.
+                            Ancak burada yardımımıza modçular yetişiyor.
+                            DLSS modu sayesinde
+                             30-50 fps aldığım oyundan
+                            60-100 FPS almaya başladım.
+                            Oyun modlamaya çok müsait.
+                            Şimdiden 
+                            yüzlerce 
+                            irili ufaklı mod 
+                            yayınlandı.
+                            Hatta ben bile
+                            Küçük modlar yapmaya başladım.
+                            Kullandığım modların listesini, 
+                            açıklamaya koyarım. 
+                            Oradan indirebilirsiniz.
+                            <br>
+                            Şimdi gelelim puanlama kısmına.
+                            Öncelikle ne bekliyorduk, ne bulduk, onu düşünelim. 
+                            <br>
+                            <ul>
+                                <li>İyi bir bilim kurgu hikayesi</li>
+                                <li>Akıcı bir oynanış</li>
+                                <li>Uzay gemime atlayıp keşif yapabilme</li>
+                                <li>Sürükleyici bir ana hikaye örgüsü</li>
+                                <li>Yaşayan bir dünya</li>
+                            </ul>
+                            Oyun bunları gerçekleştirse, 
+                            benden 92 puan alırdı.
+                            Ancak Starfield beklediğim gibi bir oyun 
+                            olmadı. 
+                            Hatta beklediğimin çok uzağındaydı
+                            Yanlış anlaşılmasın, 
+                            beklediğim şeyler ütopik şeyler değildi.
+                            Sadece 
+                            Starfield'ın yapıyor olmasını umduğum şeylerdi.
+                            Yoksa hayallerimdeki oyun, 
+                            bundan çok daha farklı olurdu. 
+                            Ben, Skyrim'in uzayda geçenindense, 
+                            Witcher 3'ün uzayda geçenini isterim. 
+                            Aslına bakarsanız, 
+                            benim istediğim şey Mass Effect. 
+                            Ancak Bethesda'nın geçmişi ve vaat ettikleri ortada. 
+                            Oyuna başlayınca hüsrana uğramamak için
+                            beklentilerimi gerçekçi bir hale getirdim. 
+                            Ancak yeterli olmadı.
+                            <br>
+                            Öncelikle 
+                            uzay gemisinin bu kadar geri plana atılması
+                             tamamen rezalet. 
+                            Aslında teknik olarak,
+                             oyun bunu destekliyor. 
+                            İleride, gezegenden gezegene gitmenizi sağlayan bir mod çıkacaktır. 
+                            Çünkü Bethesda zaten bu altyapıyı yapmış. 
+                            Ancak gemimiz yüksek hızlara çıkarsa, 
+                            gezegenlere iniş yapabiliriz.
+                             Bethesda bunu halledememiş. 
+                            Bu yüzden bu özellik kaldırılmış gibi duruyor.
+                            <br>
+                            Grafikler ve Optimizasyon:  <br>
+                            Grafikler, iki nesil eskiden kalma gibi gözüküyor.  <br>
+                            Buna rağmen optimizasyon kötü.  <br>
+                            Kötü optimizasyona rağmen DLSS eklenmemiş.  <br>
+                            PC’de oyun, ancak modlarla oynanabilir halde. <br>
+                            <br>
+                            Aksiyon: <br>
+                            Eğer silahınız, 
+                            karşınızdaki kişiye tek atmıyorsa,
+                             vuruş hissiyatı yok.
+                            Çoğu düşman, etten duvar hissi veriyor.
+                            <br>
+                            Oyunun artılarına gelirsek: <br>
+                            Starfield size 
+                            çok iyi bir rol yapma deneyimi sunuyor.
+                            Oyunda her an
+                            karşınıza yeni bir içerik çıkıyor.
+                            <br>
+                            Grafikler güzel olmasa da, dünya tasarımı hoş. 
+                            Uçuk kaçık bir tasarım yapılmamış.
+                            Her şey gerçekçi bir temele oturtulmuş.
+                            <br>
+                            Eğer Bethesda oyunlarını sevmeyip, 
+                            bilim kurgu seviyorsanız, 
+                            oyunun ilk 5 saatine dayanabilirseniz, 
+                            güzel bir bilim kurgu hikayesiyle karşılaşabilirsiniz. 
+                            İlk 5 saatten sonra
+                             oyun 
+                            yavaş yavaş etkilemeye, 
+                            10. Saatten sonraysa 
+                            sarmaya başlıyor. 
+                            Şahsen benim bu saate kadar oyunu oynama nedenim, 
+                            oyunu indirmek için 6 gün beklemem oldu.
+                            Hızlı bir internetim olsa,
+                             dayanamayıp oyunu silerdim.
+                             <br>
+                             
+                            Starfield çok emek verilmiş bir oyun. 
+                            Ama emek, 
+                            kötü bir şekilde harcanmış. 
+                            Aynı benim kanal gibi. 
+                            Ne kadar uğraşırsam uğraşayım
+                             kanalın büyümeyeceği ortada.
+                            Hatta belki de şu an bu cümleyi duyan bile yok. 
+                            Benim kanalın büüymeyeceğinin ortada olması gibi
+                            Bu oyun motoruya da düzgün bir şey çıkmayacağı ortada
+                            <br>
+                             
+                            Bak 
+                            kimse bu oyundan 
+                            her şeyi mükemmel yapmasını beklemiyor. 
+                            Ama istediğim şey şu. 
+                            Sizin yapmadığınız şeyleri yapmak 
+                            daha kolay. 
+                            Azıcık uğraşıp yapaydınız ya. 
+                            Grafikleri boş ver. 
+                            Şu oyunun aksiyonunu düzelt, 
+                            gemiyle gezegene inme ekle. 
+                            Benim için tarihin en iyi 10 oyunundan biri ya.
+                            <br>
+                            Bu haliyle benim için hem yılın oyunu,
+                            hem yılın balonu oldu.
+                            Benim için yılın oyunu, çünkü 
+                            Bu yıl çıkmış popüler yapımlar arasında oynadığım tek oyun,
+                             Starfield oldu.
+                            Ki Starfield’ı da Game Pass sayesinde oynadım.
+                            Baldur’s Gate 3 falan oynasam,
+                             her ne kadar izometrik rol yapma oyunlarıyla aram fazla iyi olmasa da,
+                             muhtemelen onu seçerdim.
+
+
+                            </p>
+                    <!-- </div>
+                </div> -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Game Videos</h5>
+                        <div id="game-videos-carousel" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators" id="video-carousel-indicators">
+                            </ol>
+                            <div class="carousel-inner" id="video-carousel-inner">
+                            </div>
+                            <a class="carousel-control-prev" href="#game-videos-carousel" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#game-videos-carousel" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <!-- <div class="card">
+                    <div class="card-body"> -->
+                        <!-- <h5 class="card-title">Game Details</h5> -->
+                        <ul class="list-group list-group-flush">
+                        <!-- <ul class="list-group list-group-flush" style="text-align: right;"> -->
+                            <!-- <li class="list-group-item"><strong>Name:</strong> <span id="game-name"></span></li> -->
+                            <li class="list-group-item"><strong>Çıkış Tarihi:</strong><span id="game-release-date"> 6 Eylül 2023</span></li>
+                            <li class="list-group-item"><strong>Platform:</strong> <span id="game-platforms"> Xbox Series X|S, PC</span></li>
+                            <li class="list-group-item"><strong>Tür:</strong> <span id="game-themes"> Aksiyon RPG</span></li>
+                            <li class="list-group-item"><strong>Geliştirici:</strong> <span id="game-publisher"> Bethesda</span></li>
+                            <li class="list-group-item"><strong>Yayıncı:</strong> <span id="game-developer"> Bethesda</span></li>
+                            <li class="list-group-item"><strong>İncelemeyi Yapan:</strong> <a href="https://www.youtube.com/watch?v=IGrBd4N7RN4" target="_blank" id="game-website"> EdgeTypE</a></li>
+                        </ul>
+                    <!-- </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+                // Toggle dark mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+        toggleDarkMode();
+        gameName = decodeHashTagFromURL();
+        console.log(gameName);
+        // Fetch data from the backend endpoint
+        function decodeHashTagFromURL() {
+            const url = window.location.href;
+            const game = decodeURIComponent(url.substring(url.lastIndexOf('/') + 1));
+            return game;
+        }
+        decodeHashTagFromURL();
+        
+
+        
+        document.getElementById('darkModeSwitch').addEventListener('change', function () {
+            toggleDarkMode();
+        });
+        </script>
+    </body>
+</html>

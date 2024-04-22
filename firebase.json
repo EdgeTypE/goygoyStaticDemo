@@ -9,8 +9,16 @@
     ],
     "rewrites": [
       {
-        "source": "**",
+        "source": "/",
         "destination": "/index.html"
+      },
+      {
+        "source": "/discord",
+        "destination": "/discord.html"
+      },
+      {
+        "source": "**",
+        "destination": "/404.html"
       }
     ]
   }

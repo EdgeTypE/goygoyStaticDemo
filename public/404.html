@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #131313;
+        }
+        .error-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .error-number {
+            font-size: 10rem;
+            font-weight: bold;
+            color: #CCCCCC;
+        }
+        .error-message {
+            font-size: 2rem;
+            color: #999999;
+        }
+        .error-quote {
+            font-size: 1rem;
+            color: #c9c9c9;
+        }
+        @keyframes fade-in {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        .error-number, .error-message, .error-quote {
+            animation-name: fade-in;
+            animation-duration: 1s;
+            animation-iteration-count: 3,2; /* Animasyonu sonsuza kadar tekrarla */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="error-container">
+            <div class="error-number">
+                <span id="num1">0</span><span id="num2">0</span><span id="num3">0</span>
+            </div>
+            <div class="error-message">Not found</div>
+            <a>
+            <div class="error-quote" id="quote"></div>
+        </div>
+    </div>
+    <script>
+        var replikler = [
+            ["Being a good soldier comes down to one thing. To one single question: What are you prepared to sacrifice?", "Prophet, Crysis 3"],
+            ["This is no war ordinary humans can win! This is the future - death's an inconvenience now, nothing more. We are all dead men walking!", "Jacob Hargreave, Crysis 2"],
+            ["The cake is a lie.", "GLaDOS, Portal"],
+            ["The right man in the wrong place can make all the difference in the world.", "G-Man, Half-Life 2"],
+            ["The hardest battles are fought in the mind", "Hellblade: Senua's Sacrifice"],
+            ["Cloak engaged.", "Nanosuit, Crysis"],
+            ["Hmmm.", "Villager, Minecraft"],
+            ["{not_found}", "Gordon Freeman, Half Life"]
+        ];
+        function randomReplik() {
+            var indeks = Math.floor(Math.random() * replikler.length);
+            return replikler[indeks][0] + "<br>" + "-" + replikler[indeks][1];
+        }
+
+        function updateError() {
+            var num1 = document.getElementById("num1");
+            var num2 = document.getElementById("num2");
+            var num3 = document.getElementById("num3");
+            var quote = document.getElementById("quote");
+            var n = parseInt(num1.textContent + num2.textContent + num3.textContent);
+            n++;
+            var s = n.toString().padStart(3, "0");
+            num1.textContent = s[0];
+            num2.textContent = s[1];
+            num3.textContent = s[2];
+            if (n == 404) {
+                clearInterval(timer);
+                quote.innerHTML = randomReplik();
+            }
+        }
+        var timer = setInterval(updateError, 2);
+    </script>
+</body>
+</html>
